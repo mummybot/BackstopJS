@@ -2,6 +2,7 @@ const Chromy = require('chromy');
 // const writeFileSync = require('fs').writeFileSync;
 const fs = require('./fs');
 const path = require('path');
+const chalk = require('chalk');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const engineTools = require('./engineTools');
 
@@ -319,8 +320,15 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
         ));
       })
       .end()
-      // If an error occurred then resolve with an error.
-      .catch(e => resolve(new BackstopException('Chromy error', scenario, viewport, e)));
+      .catch(e => {
+        const err = new BackstopException('Chromy error', scenario, viewport, e);
+        console.log(chalk.red(err));
+        if (config.cliExitOnEngineError) {
+          chromy.close().end();
+          return reject(err);
+        }
+        return resolve(err);
+      });
   });
 }
 

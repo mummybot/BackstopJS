@@ -571,6 +571,12 @@ or
 ```json
 "engine": "chromy"
 ```
+### Exposing engine errors
+By default if there is an error in the engine e.g. missing selector, it won't exit BackstopJS. This is normally fine as the screenshots will pick up any unexpected differences. If you want to terminate BackstopJS on engine errors set the option flag:
+
+```json
+"cliExitOnEngineError": true
+```
 
 ### Setting Puppeteer option flags
 Backstop sets two defaults for Puppeteer:

@@ -22,6 +22,8 @@ const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
 const VIEWPORT_SELECTOR = 'viewport';
 
+const BackstopException = require('../util/BackstopException.js');
+
 module.exports = function (args) {
   const scenario = args.scenario;
   const viewport = args.viewport;
@@ -224,8 +226,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   let error;
   await puppetCommands().catch(e => {
-    console.log(chalk.red(`Puppeteer encountered an error while running scenario "${scenario.label}"`));
-    console.log(chalk.red(e));
+    console.log(chalk.red(new BackstopException('Puppeteer error', scenario, viewport, e)));
     error = e;
   });
 
@@ -259,6 +260,10 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       testPairs: [ testPair ]
     };
     fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+
+    if (config.cliExitOnEngineError) {
+      return Promise.reject(compareConfig);
+    }
   }
 
   return Promise.resolve(compareConfig);
