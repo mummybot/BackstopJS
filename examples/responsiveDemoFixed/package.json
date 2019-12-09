@@ -1,0 +1,17 @@
+{
+  "name": "responsivedemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-backstop-test": "node ../../cli/index.js test",
+    "dev-backstop-reference": "node ../../cli/index.js reference",
+    "serve": "node ./node_modules/super-simple-web-server/ ./"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "super-simple-web-server": "^1.0.0"
+  }
+}
